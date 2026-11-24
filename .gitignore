@@ -1,0 +1,11 @@
+# Generated artifacts (not source assets)
+artifacts/
+
+# Python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# npm (if used for tooling)
+node_modules/
+package-lock.json

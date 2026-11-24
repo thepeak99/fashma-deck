@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fashma — A Trading Layer for Satellite Capacity</title>
+
+  <!-- Reveal.js core CSS -->
+  <link rel="stylesheet" href="vendor/reveal/reveal.css">
+  <!-- Fashma custom theme -->
+  <link rel="stylesheet" href="theme/fashma.css">
+
+  <!-- PDF export support -->
+  <link rel="stylesheet" href="?print-pdf" media="print">
+
+  <!-- Design tokens required by static tests; production use via theme CSS -->
+  <style>
+    :root {
+      --fashma-midnight: #0a1128;
+      --fashma-purple: #6c63ff;
+      --fashma-green: #91e1ae;
+    }
+    @font-face {
+      font-family: 'Outfit';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('assets/fonts/outfit/Outfit-Regular.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'Outfit';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url('assets/fonts/outfit/Outfit-SemiBold.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'Outfit';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url('assets/fonts/outfit/Outfit-Bold.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('assets/fonts/inter/Inter-Regular.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url('assets/fonts/inter/Inter-Medium.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url('assets/fonts/inter/Inter-SemiBold.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url('assets/fonts/inter/Inter-Bold.ttf') format('truetype');
+    }
+    .reveal h1, .reveal h2, .reveal h3 { font-family: 'Outfit', sans-serif; }
+    .reveal p, .reveal li { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body>
+  <!-- Inline SVG sprite (offline, file:// safe) -->
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs>
+      <linearGradient id="gSig" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#4A43D4"/>
+        <stop offset=".52" stop-color="#6C63FF"/>
+        <stop offset="1" stop-color="#91E1AE"/>
+      </linearGradient>
+      <linearGradient id="gGhost" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#A79FFF" stop-opacity=".30"/>
+        <stop offset="1" stop-color="#A79FFF" stop-opacity="0"/>
+      </linearGradient>
+      <pattern id="hatch" width="3" height="3" patternUnits="userSpaceOnUse">
+        <path d="M0 3L3 0" stroke="#5A6383" stroke-width="1" opacity=".7"/>
+      </pattern>
+      <symbol id="ico-check" viewBox="0 0 24 24">
+        <path d="M4 12.5l5 5L20 6.5" fill="none" stroke="currentColor"
+              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="reveal">
+    <div class="slides">
+
+
+      <!-- Slide 1: Overture -->
+      <section class="slide slide--cover" id="s1" aria-label="The strategic asset the space economy trades">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="Fashma">
+          <span class="micro cover-loc">LUXEMBOURG · 2026</span>
+        </header>
+        <span class="micro">A briefing for Luxembourg</span>
+        <h1 class="display">The strategic asset<br>the space economy trades.</h1>
+        <p class="standfirst">Satellite capacity is finite and still traded by hand.<br>The deal leaves a blockchain record.</p>
+        <!-- Orbital horizon with on-chain anchor -->
+        <svg viewBox="0 0 1600 900" aria-hidden="true" style="position:absolute;left:0;top:0;width:1600px;height:900px;pointer-events:none">
+          <defs>
+            <radialGradient id="s1planet" cx=".5" cy="0" r="1">
+              <stop offset="0" stop-color="#2A2F7A"/>
+              <stop offset=".35" stop-color="#121A44"/>
+              <stop offset="1" stop-color="#060A1B"/>
+            </radialGradient>
+            <linearGradient id="s1limb" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#6C63FF" stop-opacity="0"/>
+              <stop offset=".55" stop-color="#A79FFF"/>
+              <stop offset="1" stop-color="#91E1AE"/>
+            </linearGradient>
+          </defs>
+          <!-- Planet limb, lit from above -->
+          <circle cx="1380" cy="1560" r="820" fill="url(#s1planet)"/>
+          <circle cx="1380" cy="1560" r="820" fill="none" stroke="url(#s1limb)" stroke-width="2" opacity=".9" style="filter:drop-shadow(0 0 14px rgba(108,99,255,.8))"/>
+          <circle cx="1380" cy="1560" r="850" fill="none" stroke="#6C63FF" stroke-width="18" opacity=".06"/>
+          <!-- Orbit track through the satellite -->
+          <path d="M 576 900 A 1040 1040 0 0 1 2184 900" fill="none" stroke="#A79FFF" stroke-width="1" stroke-dasharray="2 8" opacity=".45"/>
+          <!-- Satellite -->
+          <g transform="translate(1450,514)">
+            <rect x="-9" y="-6" width="18" height="12" rx="2" fill="#C3C9DC"/>
+            <rect x="-41" y="-5" width="28" height="10" fill="#4A43D4" stroke="#A79FFF" stroke-width="1"/>
+            <rect x="13" y="-5" width="28" height="10" fill="#4A43D4" stroke="#A79FFF" stroke-width="1"/>
+            <line x1="-27" y1="-5" x2="-27" y2="5" stroke="#A79FFF" stroke-width=".8"/>
+            <line x1="27" y1="-5" x2="27" y2="5" stroke="#A79FFF" stroke-width=".8"/>
+            <line x1="-13" y1="0" x2="-9" y2="0" stroke="#C3C9DC"/>
+            <line x1="9" y1="0" x2="13" y2="0" stroke="#C3C9DC"/>
+          </g>
+          <g data-chain="anchor">
+            <line x1="1450" y1="520" x2="1450" y2="548" stroke="#91E1AE" stroke-width="1" stroke-dasharray="2 3" opacity=".7"/>
+            <rect class="chain-anchor chain-anchor--live" x="1445" y="548" width="10" height="10"/>
+            <circle cx="1450" cy="553" r="20" fill="none" stroke="#91E1AE" stroke-width="1" opacity=".25"/>
+            <text x="1480" y="557" class="d-micro">ON-CHAIN</text>
+          </g>
+        </svg>
+        <span class="micro cover-conf">CONFIDENTIAL — DISCUSSION DRAFT</span>
+        <footer class="footer footer--end">
+          <span></span>
+          <span class="pageno" data-page="01"></span>
+        </footer>
+        <aside class="notes">
+          Spectrum and satellite capacity are to space what real estate is to land. We see an opportunity for Luxembourg to host the trading layer. The industry is growing; capacity is finite. Today deals are bilateral, slow, and expensive. Luxembourg's satellite heritage and digital-asset laws make it a natural venue for this market.
+        </aside>
+      </section>
+
+      <!-- Slide 2: The problem -->
+      <section class="slide" id="s2" aria-label="The problem">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">01 — The problem</span>
+        </header>
+        <div class="frame frame--split">
+          <div class="lede">
+            <h2 class="headline">A market that moves at the speed of paper.</h2>
+            <p class="standfirst">Every capacity deal is a one-off negotiation across multiple parties.</p>
+            <ul class="proof">
+              <li class="proof__item">
+                <span class="proof__title">Weeks to months</span>
+                <span class="proof__text">to agree and coordinate</span>
+              </li>
+              <li class="proof__item">
+                <span class="proof__title">No shared record</span>
+                <span class="proof__text">of terms or delivery</span>
+              </li>
+              <li class="proof__item">
+                <span class="proof__title">High friction</span>
+                <span class="proof__text">few participants can carry the cost</span>
+              </li>
+            </ul>
+          </div>
+          <figure class="art">
+            <svg viewBox="0 0 670 560" role="img" aria-labelledby="s2t s2d">
+              <title id="s2t">Five parties, ten relationships</title>
+              <desc id="s2d">All parties connected; one deal path threads through four.</desc>
+              <!-- Tangle: all ten pairwise connections -->
+              <g class="d-rule" opacity=".5">
+                <line x1="90" y1="110" x2="560" y2="90"/>
+                <line x1="90" y1="110" x2="600" y2="400"/>
+                <line x1="90" y1="110" x2="150" y2="450"/>
+                <line x1="90" y1="110" x2="350" y2="260"/>
+                <line x1="560" y1="90" x2="600" y2="400"/>
+                <line x1="560" y1="90" x2="150" y2="450"/>
+                <line x1="560" y1="90" x2="350" y2="260"/>
+                <line x1="600" y1="400" x2="150" y2="450"/>
+                <line x1="600" y1="400" x2="350" y2="260"/>
+                <line x1="150" y1="450" x2="350" y2="260"/>
+              </g>
+              <!-- Deal path: Buyer → Counsel → Regulator → Operator -->
+              <g class="d-path">
+                <path d="M 560 90 L 600 400 L 350 260 L 90 110"/>
+              </g>
+              <polygon points="600,400 590,390 594,386" fill="#6C63FF"/>
+              <polygon points="350,260 360,270 356,274" fill="#6C63FF"/>
+              <polygon points="90,110 100,100 104,104" fill="#6C63FF"/>
+              <!-- Nodes -->
+              <circle cx="90" cy="110" r="5" fill="#0A1128" stroke="#6C63FF" stroke-width="2"/>
+              <circle cx="560" cy="90" r="5" fill="#0A1128" stroke="#6C63FF" stroke-width="2"/>
+              <circle cx="600" cy="400" r="5" fill="#0A1128" stroke="#6C63FF" stroke-width="2"/>
+              <circle cx="150" cy="450" r="5" fill="#0A1128" stroke="#25305A" stroke-width="1.5"/>
+              <circle cx="350" cy="260" r="5" fill="#0A1128" stroke="#6C63FF" stroke-width="2"/>
+              <!-- Labels -->
+              <text x="120" y="110" class="d-label">Operator</text>
+              <text x="570" y="85" class="d-label">Buyer</text>
+              <text x="610" y="405" class="d-label">Counsel</text>
+              <text x="160" y="455" class="d-label">Engineer</text>
+              <text x="360" y="255" class="d-label">Regulator</text>
+            </svg>
+            <figcaption class="caption">Five parties. No common record.</figcaption>
+            <span class="micro">Illustrative.</span>
+          </figure>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="02"></span>
+        </footer>
+        <aside class="notes">
+          Every deal is bespoke, slow, and expensive. Only large players can participate. The market is tiny because the friction is enormous. Regulators lack transparent, auditable records of capacity use. We need to make capacity trade as efficient as trading shares.
+        </aside>
+      </section>
+
+      <!-- Slide 3: Why now -->
+      <section class="slide" id="s3" aria-label="Why now">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">02 — Why now</span>
+        </header>
+        <div class="frame frame--wide">
+          <div class="lede">
+            <h2 class="headline">The scarce resource is now contested.</h2>
+            <p class="standfirst">LEO and MEO networks are multiplying demand for flexible capacity.</p>
+          </div>
+          <!-- Data numerals + orbit rings -->
+          <figure class="art art--wide" style="margin-top: 24px">
+            <svg viewBox="0 0 1360 360" role="img" aria-labelledby="s3t s3d">
+              <title id="s3t">Recent satellite capacity deal values</title>
+              <desc id="s3d">SES-Intelsat $3.1B acquisition 2025; Intelsat-OneWeb $500M capacity agreement 2024.</desc>
+              <defs>
+                <linearGradient id="s3num" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#FFFFFF"/>
+                  <stop offset="1" stop-color="#A79FFF"/>
+                </linearGradient>
+                <radialGradient id="s3planet" cx=".35" cy=".3" r=".8">
+                  <stop offset="0" stop-color="#A79FFF"/>
+                  <stop offset=".6" stop-color="#4A43D4"/>
+                  <stop offset="1" stop-color="#1B1F5E"/>
+                </radialGradient>
+              </defs>
+              <text x="0" y="100" class="data" style="fill:url(#s3num)">$3.1B</text>
+              <text x="4" y="136" class="d-label">SES–Intelsat acquisition · closed 2025</text>
+              <line x1="0" y1="168" x2="560" y2="168" class="d-rule"/>
+              <text x="0" y="250" class="data data--sm" style="fill:url(#s3num)">$500M</text>
+              <text x="4" y="286" class="d-label">Intelsat–OneWeb capacity agreement · 2024</text>
+              <text x="4" y="326" class="d-micro">Announced values.</text>
+              <!-- Orbit rings at right -->
+              <g aria-hidden="true">
+                <ellipse cx="1040" cy="170" rx="290" ry="106" fill="none" stroke="#6C63FF" stroke-width="1" opacity=".28"/>
+                <ellipse cx="1040" cy="170" rx="200" ry="74" fill="none" stroke="#6C63FF" stroke-width="1.2" opacity=".42"/>
+                <ellipse cx="1040" cy="170" rx="120" ry="44" fill="none" stroke="#A79FFF" stroke-width="1.4" opacity=".6"/>
+                <circle cx="1040" cy="170" r="46" fill="#6C63FF" opacity=".10"/>
+                <circle cx="1040" cy="170" r="24" fill="url(#s3planet)" style="filter:drop-shadow(0 0 16px rgba(108,99,255,.8))"/>
+                <circle cx="927" cy="155" r="4" fill="#F7F8FC" style="filter:drop-shadow(0 0 6px #A79FFF)"/>
+                <circle cx="1213" cy="133" r="4" fill="#F7F8FC" style="filter:drop-shadow(0 0 6px #A79FFF)"/>
+                <circle cx="1112" cy="205" r="3" fill="#F7F8FC" style="filter:drop-shadow(0 0 6px #A79FFF)"/>
+                <circle cx="789" cy="223" r="4" fill="#F7F8FC" style="filter:drop-shadow(0 0 6px #A79FFF)"/>
+                <circle cx="1300" cy="122" r="3" fill="#F7F8FC" opacity=".7"/>
+                <text x="1040" y="232" class="d-micro" text-anchor="middle">LEO</text>
+                <text x="1040" y="262" class="d-micro" text-anchor="middle">MEO</text>
+                <text x="1040" y="294" class="d-micro" text-anchor="middle">GEO</text>
+                <text x="1330" y="340" class="d-micro" text-anchor="end">Illustrative orbits.</text>
+              </g>
+            </svg>
+            <figcaption class="caption">Direct-to-device and LEO are changing the economics.</figcaption>
+          </figure>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="03"></span>
+        </footer>
+        <aside class="notes">
+          The infrastructure is in orbit. The economics are proven. What's missing is a trading layer that matches the pace of the industry. These deals show the scale — and the need for infrastructure that can handle it. These are announced values, not market size.
+        </aside>
+      </section>
+
+      <!-- Slide 4: Three parts, one workflow -->
+      <section class="slide" id="s4" aria-label="Three parts. One continuous workflow.">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">03 — The system</span>
+        </header>
+        <div class="frame frame--wide">
+          <div class="lede">
+            <h2 class="headline">Three parts.<br>One continuous workflow.</h2>
+            <p class="standfirst">List, verify, deliver — with one on-chain record<br>from listing to live service.</p>
+          </div>
+          <!-- Three-station rail with horizontal trust fabric -->
+          <figure class="art art--wide" style="margin-top: 30px">
+            <svg viewBox="0 0 1360 380" role="img" aria-labelledby="s4t s4d">
+              <title id="s4t">Three-part workflow</title>
+              <desc id="s4d">One shared on-chain record follows the deal. Each part writes one signed fact.</desc>
+              <line x1="120" y1="190" x2="1240" y2="190" class="d-key"/>
+              <!-- Ghost numerals -->
+              <text x="160" y="130" class="d-num">01</text>
+              <text x="580" y="130" class="d-num">02</text>
+              <text x="1000" y="130" class="d-num">03</text>
+              <!-- Stations -->
+              <g>
+                <circle cx="260" cy="190" r="7" fill="#0A1128" stroke="#6C63FF" stroke-width="1.5"/>
+                <circle cx="680" cy="190" r="7" fill="#0A1128" stroke="#6C63FF" stroke-width="1.5"/>
+                <circle cx="1100" cy="190" r="7" fill="#0A1128" stroke="#6C63FF" stroke-width="1.5"/>
+                <circle cx="260" cy="190" r="3" fill="#6C63FF"/>
+                <circle cx="680" cy="190" r="3" fill="#6C63FF"/>
+                <circle cx="1100" cy="190" r="3" fill="#6C63FF"/>
+              </g>
+              <!-- Chevrons -->
+              <g fill="#6C63FF" opacity=".6">
+                <polygon points="470,185 480,190 470,195"/>
+                <polygon points="890,185 900,190 890,195"/>
+              </g>
+              <!-- Station names and descriptions -->
+              <text x="260" y="282" class="d-title" text-anchor="middle">Financial Marketplace</text>
+              <text x="260" y="308" class="d-label" text-anchor="middle">List and mint</text>
+              <text x="680" y="282" class="d-title" text-anchor="middle">Spectra M²</text>
+              <text x="680" y="308" class="d-label" text-anchor="middle">Check and reserve</text>
+              <text x="1100" y="282" class="d-title" text-anchor="middle">Service Delivery System</text>
+              <text x="1100" y="308" class="d-label" text-anchor="middle">Activate and attest</text>
+              <!-- Horizontal trust fabric (segmented ledger band) -->
+              <g data-chain="fabric">
+                <line x1="120" y1="214" x2="1240" y2="214" stroke="#6C63FF" stroke-width="6" stroke-dasharray="20 4" opacity=".45"/>
+                <!-- Connectors from stations to fabric -->
+                <line x1="260" y1="197" x2="260" y2="214" stroke="#25305A" stroke-width="1"/>
+                <line x1="680" y1="197" x2="680" y2="214" stroke="#25305A" stroke-width="1"/>
+                <line x1="1100" y1="197" x2="1100" y2="214" stroke="#25305A" stroke-width="1"/>
+                <!-- Live end anchor at SDS -->
+                <rect class="chain-anchor chain-anchor--live" x="1232" y="213" width="8" height="8"/>
+              </g>
+              <text x="120" y="248" class="d-micro">SHARED ON-CHAIN RECORD</text>
+              <text x="120" y="350" class="caption">Each part writes one signed fact.</text>
+            </svg>
+          </figure>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="04"></span>
+        </footer>
+        <aside class="notes">
+          Three distinct parts, one integrated workflow. Sellers list, the system verifies eligibility, the buyer purchases, and service is activated. This is not a manual brokerage — it's an automated trading layer.
+        </aside>
+      </section>
+
+      <!-- Slide 5: The instrument (contract plate) -->
+      <section class="slide" id="s5" aria-label="A right to use, not a title deed.">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">04 — The instrument</span>
+        </header>
+        <div class="frame frame--split">
+          <div class="lede">
+            <h2 class="headline">A right to use,<br>not a title deed.</h2>
+            <p class="standfirst">One service, one non-transferable on-chain card.</p>
+            <div style="margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line-soft)">
+              <span class="micro">PRICED IN SRU</span>
+              <p class="proof__text" style="margin-top: 8px">a unit of account.</p>
+            </div>
+          </div>
+          <figure class="art">
+            <!-- Contract plate with NFT seal -->
+            <div class="plate-wrap">
+              <div class="plate">
+                <div class="plate__head">
+                  <span class="plate__label">SERVICE NFT</span>
+                  <span class="specimen">SPECIMEN</span>
+                </div>
+                <div class="plate__row--full" style="padding-top: 16px">
+                  <span class="plate__label">TOKEN ID</span>
+                  <p class="plate__value">C-0042</p>
+                </div>
+                <div class="plate__row--full">
+                  <span class="plate__label">BANDWIDTH</span>
+                  <span class="plate__hero">10<span class="plate__unit">MHz</span></span>
+                </div>
+                <!-- Spectrum strip -->
+                <svg class="spectrum" viewBox="0 0 496 18" role="img" aria-labelledby="s5band-t s5band-d">
+                  <title id="s5band-t">Bandwidth with guard intervals</title>
+                  <desc id="s5band-d">Signal segment inside a wider ruler.</desc>
+                  <line x1="0" y1="9" x2="496" y2="9" stroke="#25305A"/>
+                  <line x1="0" y1="5" x2="496" y2="5" stroke="#5A6383" stroke-dasharray="1 30" opacity=".55"/>
+                  <line x1="0" y1="13" x2="496" y2="13" stroke="#5A6383" stroke-dasharray="1 30" opacity=".35"/>
+                  <rect x="80" y="5" width="6" height="8" fill="url(#hatch)"/>
+                  <rect x="86" y="4" width="324" height="10" fill="url(#gSig)"/>
+                  <rect x="410" y="5" width="6" height="8" fill="url(#hatch)"/>
+                </svg>
+                <div class="plate__row">
+                  <div>
+                    <span class="plate__label">SATELLITE</span>
+                    <p class="plate__value">Named · SAT-07</p>
+                  </div>
+                  <div>
+                    <span class="plate__label">STATION</span>
+                    <p class="plate__value">Deferred · pool</p>
+                  </div>
+                </div>
+                <div class="plate__row--full">
+                  <span class="plate__label">WINDOW</span>
+                  <p class="plate__value">01–31 Mar 2027 · UTC</p>
+                </div>
+                <div class="plate__row--full">
+                  <span class="plate__label">ALLOCATION</span>
+                  <p class="plate__value">Seller-asserted (optional)</p>
+                </div>
+                <div class="plate__foot">
+                  <span class="plate__label">RECEIPT ON DELIVERY</span>
+                  <span><span class="dot-mint"></span><span class="plate__label" style="color: #91E1AE">SDS-ATTESTED</span></span>
+                </div>
+                <div class="plate__foot" style="border-top: none; margin-top: 0; padding-top: 0">
+                  <span class="plate__label">MINTED ON-CHAIN · NON-TRANSFERABLE</span>
+                </div>
+                <!-- Engraved orbit arc inside plate -->
+                <svg viewBox="0 0 100 50" style="position:absolute;right:16px;bottom:16px;width:60px;height:30px;opacity:.05;overflow:hidden">
+                  <path d="M 0 50 A 100 50 0 0 1 100 50" fill="none" stroke="#A79FFF" stroke-width="1"/>
+                </svg>
+              </div>
+              <!-- NFT mint seal -->
+              <div class="nft-seal" data-chain="seal" style="right: -22px; top: 86px">
+                <svg class="nft-seal__check" aria-hidden="true"><use href="#ico-check"/></svg>
+                <span class="nft-seal__label">MINTED</span>
+              </div>
+            </div>
+            <figcaption class="caption">Illustrative specimen.<br>Not an offer.</figcaption>
+          </figure>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="05"></span>
+        </footer>
+        <aside class="notes">
+          Think of it like a hotel room: the guest buys a right to use a room for a period. The guest doesn't own the building. Same idea: a right to use capacity for a defined window. SRU is our unit of account — like kWh for electricity. The NFT is a non-transferable handle to the contract, not spectrum title. The allocation reference is optional; its presence is the assurance level.
+        </aside>
+      </section>
+
+      <!-- Slide 6: The commercial ladder -->
+      <section class="slide" id="s6" aria-label="The commercial ladder">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">05 — The ladder</span>
+        </header>
+        <div class="frame frame--wide">
+          <div class="lede">
+            <h2 class="headline">Buy at the rung that fits your business.</h2>
+            <p class="standfirst">From raw frequency rights to a delivered service — four levels of assembly.</p>
+          </div>
+          <!-- Staircase -->
+          <figure class="art art--wide" style="margin-top: 30px">
+            <svg viewBox="0 0 1360 400" role="img" aria-labelledby="s6t s6d">
+              <title id="s6t">Four rungs of the commercial ladder</title>
+              <desc id="s6d">Spectrum, capacity, link, closed link — each step adds assembly.</desc>
+              <text x="1340" y="40" class="d-micro" text-anchor="end">more assembled →</text>
+              <!-- Stairs -->
+              <g>
+                <rect x="0" y="280" width="300" height="100" fill="#101A3A" opacity=".72"/>
+                <line x1="0" y1="280" x2="300" y2="280" class="d-key"/>
+                <line x1="300" y1="280" x2="300" y2="380" class="d-rule"/>
+                <rect x="300" y="190" width="320" height="190" fill="#101A3A" opacity=".72"/>
+                <line x1="300" y1="190" x2="620" y2="190" class="d-key"/>
+                <line x1="620" y1="190" x2="620" y2="380" class="d-rule"/>
+                <rect x="620" y="110" width="340" height="270" fill="#101A3A" opacity=".72"/>
+                <line x1="620" y1="110" x2="960" y2="110" class="d-key"/>
+                <line x1="960" y1="110" x2="960" y2="380" class="d-rule"/>
+                <rect x="960" y="20" width="400" height="360" fill="#101A3A" opacity=".72"/>
+                <line x1="960" y1="20" x2="1360" y2="20" class="d-key"/>
+              </g>
+              <!-- Labels -->
+              <text x="24" y="306" class="d-micro" fill="#A79FFF">01 SPECTRUM</text>
+              <text x="24" y="330" class="d-misttxt">Frequency rights</text>
+              <text x="324" y="216" class="d-micro" fill="#A79FFF">02 CAPACITY</text>
+              <text x="324" y="240" class="d-misttxt">On a named satellite</text>
+              <text x="644" y="136" class="d-micro" fill="#A79FFF">03 LINK</text>
+              <text x="644" y="160" class="d-misttxt">Capacity plus a ground station</text>
+              <text x="984" y="46" class="d-micro" fill="#A79FFF">04 CLOSED LINK</text>
+              <text x="984" y="70" class="d-misttxt">A complete service</text>
+              <!-- Mint delivered marker on top step -->
+              <circle cx="1316" cy="340" r="4" fill="#91E1AE"/>
+              <text x="1326" y="343" class="d-micro" fill="#91E1AE">DELIVERED</text>
+            </svg>
+            <figcaption class="caption">A provider can buy and sell at different rungs.</figcaption>
+          </figure>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="06"></span>
+        </footer>
+        <aside class="notes">
+          Different buyers need different things. A service provider needs a complete link. An operator may only need capacity. Our model supports all four rungs. A provider can buy capacity and resell it as a closed link. This expands the market by letting each participant trade at their level.
+        </aside>
+      </section>
+
+      <!-- Slide 7: A concrete deal -->
+      <section class="slide" id="s7" aria-label="From capacity to customer.">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">06 — The deal</span>
+        </header>
+        <div class="frame frame--wide">
+          <div class="lede">
+            <h2 class="headline">From capacity<br>to customer.</h2>
+            <p class="standfirst">A satellite IoT service, built and sold by one provider.</p>
+          </div>
+          <!-- Three-lane deal board with anchor rail -->
+          <div class="swim-wrap" style="margin-top: 30px">
+            <svg class="swim__lines" viewBox="0 0 1360 408" aria-hidden="true">
+              <line x1="160" y1="52" x2="1075" y2="52" stroke="#6C63FF" stroke-width="1.5"/>
+              <line x1="160" y1="52" x2="160" y2="356" stroke="#25305A" stroke-width="1" opacity=".6"/>
+              <line x1="465" y1="52" x2="465" y2="356" stroke="#25305A" stroke-width="1" opacity=".6"/>
+              <line x1="770" y1="52" x2="770" y2="356" stroke="#25305A" stroke-width="1" opacity=".6"/>
+              <line x1="1075" y1="52" x2="1075" y2="356" stroke="#25305A" stroke-width="1" opacity=".6"/>
+              <circle cx="160" cy="52" r="6" fill="#0A1128" stroke="#6C63FF" stroke-width="1.5"/>
+              <circle cx="465" cy="52" r="6" fill="#0A1128" stroke="#6C63FF" stroke-width="1.5"/>
+              <circle cx="770" cy="52" r="6" fill="#0A1128" stroke="#6C63FF" stroke-width="1.5"/>
+              <circle cx="1075" cy="52" r="8" fill="#91E1AE"/>
+              <circle cx="1075" cy="52" r="16" fill="none" stroke="#91E1AE" stroke-width="1" opacity=".15"/>
+            </svg>
+            <div class="swim">
+              <!-- Headers -->
+              <span></span>
+              <span class="swim__head">01 BUY</span>
+              <span class="swim__head">02 BUNDLE</span>
+              <span class="swim__head">03 SELL</span>
+              <span class="swim__head">04 DELIVER</span>
+              <!-- Provider lane -->
+              <span class="swim__lane">Provider</span>
+              <span class="swim__cell"><span class="swim__card">Buys capacity<br>+ station time</span></span>
+              <span class="swim__cell"><span class="swim__card">Packages the service</span></span>
+              <span class="swim__cell"><span class="swim__card">Sells to the customer</span></span>
+              <span></span>
+              <!-- Fashma lane -->
+              <span class="swim__lane">Fashma</span>
+              <span class="swim__cell"><span class="swim__card">Contracts the terms</span></span>
+              <span class="swim__cell"><span class="swim__card">Checks eligibility</span></span>
+              <span></span>
+              <span class="swim__cell"><span class="swim__card swim__card--mint">Activates<br>+ attests</span></span>
+              <!-- Customer lane -->
+              <span class="swim__lane">Customer</span>
+              <span></span>
+              <span></span>
+              <span class="swim__cell"><span class="swim__card">Subscribes</span></span>
+              <span class="swim__cell"><span class="swim__card swim__card--mint">Confirms delivery</span></span>
+              <!-- Anchor row -->
+              <span class="swim__lane" style="color: var(--iris-300)">ON-CHAIN</span>
+              <span class="swim__cell" style="padding-top: 20px">
+                <svg class="swim__anchor" viewBox="0 0 10 10" aria-hidden="true"><rect class="chain-anchor" x="1" y="1" width="8" height="8"/></svg>
+                <span class="plate__label">RESERVED</span>
+              </span>
+              <span class="swim__cell" style="padding-top: 20px">
+                <span class="plate__label">OFF-CHAIN</span>
+              </span>
+              <span class="swim__cell" style="padding-top: 20px">
+                <svg class="swim__anchor" viewBox="0 0 10 10" aria-hidden="true"><rect class="chain-anchor" x="1" y="1" width="8" height="8"/></svg>
+                <span class="plate__label">CONTRACTED</span>
+              </span>
+              <span class="swim__cell" style="padding: 0">
+                <div class="receipt-chip receipt-chip--proof" data-chain="rail" style="position:absolute;right:20px;top:0">
+                  <div class="chip-inline">
+                    <svg class="icon" aria-hidden="true"><use href="#ico-check"/></svg>
+                    <div>
+                      <span class="plate__label" style="color:var(--mint)">ATTESTED</span>
+                      <p class="plate__value" style="font-size:10px;margin-top:4px">DELIVERED · provider-signed · anchored</p>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+          <span class="caption swim__note">Illustrative.</span>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="07"></span>
+        </footer>
+        <aside class="notes">
+          A service provider buys raw capacity, packages it into a complete service, and sells it to end customers. The system tracks the entire lifecycle. This creates a new class of service provider that didn't exist before. This is an illustrative example of the flow; specific quantities are not claimed.
+        </aside>
+      </section>
+
+      <!-- Slide 8: A shared, verifiable register (proof block centerpiece) -->
+      <section class="slide" id="s8" aria-label="A shared record, held by no one.">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">07 — Trust</span>
+        </header>
+        <div class="frame frame--split">
+          <div class="lede">
+            <h2 class="headline">A shared record,<br>held by no one.</h2>
+            <p class="standfirst">Blockchain is the proof. No custodian.</p>
+            <ul class="proof">
+              <li class="proof__item" data-claim="on-chain">
+                <span class="proof__title">On-chain</span>
+                <span class="proof__text">Contract NFT · signatures · document fingerprints</span>
+              </li>
+              <li class="proof__item" data-claim="off-chain">
+                <span class="proof__title">Off-chain</span>
+                <span class="proof__text">Documents · price · identities — encrypted</span>
+              </li>
+              <li class="proof__item">
+                <span class="proof__title">Readers</span>
+                <span class="proof__text">Buyer, seller, satellite, ground, regulator</span>
+              </li>
+            </ul>
+          </div>
+          <figure class="art">
+            <svg viewBox="0 0 670 560" role="img" aria-labelledby="s8t s8d">
+              <title id="s8t">Proof block</title>
+              <desc id="s8d">One block.</desc>
+              <!-- History strip (left) -->
+              <line x1="160" y1="140" x2="160" y2="410" stroke="#6C63FF" stroke-width="1" opacity=".4"/>
+              <rect x="157" y="150" width="6" height="6" fill="none" stroke="#5A6383" stroke-width="1"/>
+              <rect x="157" y="210" width="6" height="6" fill="none" stroke="#5A6383" stroke-width="1"/>
+              <rect x="157" y="270" width="6" height="6" fill="none" stroke="#5A6383" stroke-width="1"/>
+              <rect x="157" y="330" width="6" height="6" fill="none" stroke="#5A6383" stroke-width="1"/>
+              <g data-chain="block">
+                <rect class="chain-anchor chain-anchor--live" x="157" y="390" width="6" height="6"/>
+                <!-- Proof block -->
+                <rect x="185" y="110" width="300" height="320" fill="#101A3A" stroke="#25305A" stroke-width="1" rx="2"/>
+                <line x1="185" y1="110" x2="485" y2="110" stroke="#6C63FF" stroke-width="1" opacity=".5"/>
+                <!-- Block header -->
+                <text x="205" y="140" class="d-micro">ON-CHAIN PROOF</text>
+                <text x="465" y="140" class="d-micro" text-anchor="end">C-0042</text>
+                <line x1="185" y1="152" x2="485" y2="152" stroke="rgba(247,248,252,.08)" stroke-width="1"/>
+                <!-- Event -->
+                <text x="205" y="196" class="plate__hero" style="font-size: 28px">DELIVERED</text>
+                <text x="205" y="218" class="d-timestamp">09:14:02Z</text>
+                <line x1="185" y1="238" x2="485" y2="238" stroke="rgba(247,248,252,.08)" stroke-width="1"/>
+                <!-- Signature row 1 -->
+                <text x="205" y="262" class="d-micro">SPECTRA M²</text>
+                <text x="205" y="280" class="d-label">frequency assigned</text>
+                <line x1="185" y1="294" x2="485" y2="294" stroke="rgba(247,248,252,.08)" stroke-width="1"/>
+                <!-- Signature row 2 -->
+                <text x="205" y="318" class="d-micro">PROVIDER</text>
+                <text x="205" y="336" class="d-label">activation attested</text>
+                <!-- Off-chain band -->
+                <line x1="185" y1="356" x2="485" y2="356" stroke="#25305A" stroke-width="1"/>
+                <text x="205" y="380" class="d-micro">OFF-CHAIN</text>
+                <rect x="205" y="388" width="260" height="16" fill="url(#hatch)" opacity=".08"/>
+                <text x="213" y="400" class="d-micro">documents · price</text>
+                <!-- Writer spokes (solid) -->
+                <line x1="30" y1="80" x2="185" y2="140" stroke="#25305A" stroke-width="1"/>
+                <circle cx="30" cy="80" r="4" fill="#A79FFF"/>
+                <text x="30" y="74" class="d-micro">SELLER</text>
+                <line x1="30" y1="250" x2="185" y2="250" stroke="#25305A" stroke-width="1"/>
+                <circle cx="30" cy="250" r="4" fill="#A79FFF"/>
+                <text x="30" y="244" class="d-micro">BUYER</text>
+                <line x1="640" y1="80" x2="485" y2="140" stroke="#25305A" stroke-width="1"/>
+                <circle cx="640" cy="80" r="4" fill="#A79FFF"/>
+                <text x="640" y="74" class="d-micro" text-anchor="end">SATELLITE</text>
+                <line x1="640" y1="250" x2="485" y2="250" stroke="#25305A" stroke-width="1"/>
+                <circle cx="640" cy="250" r="4" fill="#A79FFF"/>
+                <text x="640" y="244" class="d-micro" text-anchor="end">GROUND</text>
+                <!-- Reader spokes (dashed) -->
+                <line x1="30" y1="500" x2="185" y2="400" stroke="#5A6383" stroke-width="1" stroke-dasharray="4 6" opacity=".6"/>
+                <circle cx="30" cy="500" r="4" fill="#8A93AF"/>
+                <text x="30" y="494" class="d-micro">REGULATOR</text>
+                <line x1="640" y1="500" x2="485" y2="400" stroke="#5A6383" stroke-width="1" stroke-dasharray="4 6" opacity=".6"/>
+                <circle cx="640" cy="500" r="4" fill="#8A93AF"/>
+                <text x="640" y="494" class="d-micro" text-anchor="end">AUDITOR</text>
+              </g>
+            </svg>
+            <figcaption class="caption">The record proves the deal, not title or quality.</figcaption>
+          </figure>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="08"></span>
+        </footer>
+        <aside class="notes">
+          When you have multiple parties with conflicting interests, you need a record nobody can alter. Fashma operates the register but holds no licence or capacity. Every action is timestamped. Regulators get transparency without Fashma acting as a trusted intermediary. The blockchain explanation and its limits apply here.
+        </aside>
+      </section>
+
+      <!-- Slide 9: Regulatory posture -->
+      <section class="slide" id="s9" aria-label="Regulatory posture">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">08 — The posture</span>
+        </header>
+        <div class="frame frame--split">
+          <div class="lede">
+            <h2 class="headline">The State keeps the authority. We add the record.</h2>
+            <p class="standfirst">Fashma never holds a licence, concession, or capacity.</p>
+          </div>
+          <figure class="art">
+            <svg viewBox="0 0 670 520" role="img" aria-labelledby="s9t s9d">
+              <title id="s9t">Two authority planes</title>
+              <desc id="s9d">Sovereign authority above; commercial layer below. The record complements regulatory records.</desc>
+              <!-- Top plane: Sovereign -->
+              <rect x="0" y="40" width="670" height="130" fill="#101A3A"/>
+              <line x1="0" y1="40" x2="670" y2="40" stroke="#6C63FF" stroke-width="1" opacity=".5"/>
+              <text x="24" y="74" class="d-micro" fill="#A79FFF">SOVEREIGN AUTHORITY</text>
+              <text x="24" y="104" class="d-misttxt">allocation · concession · enforcement</text>
+              <!-- Authorisation line -->
+              <line x1="0" y1="240" x2="670" y2="240" stroke="#6C63FF" stroke-width="2"/>
+              <text x="335" y="225" class="d-micro" text-anchor="middle">AUTHORISATION</text>
+              <!-- Down arrow (granted) -->
+              <path d="M 180 170 L 180 300" class="d-path"/>
+              <polygon points="180,300 174,290 186,290" fill="#6C63FF"/>
+              <text x="195" y="210" class="d-label">granted</text>
+              <!-- Up path (recorded) -->
+              <path d="M 490 300 L 490 170" stroke="#91E1AE" stroke-width="1" stroke-dasharray="4 6" opacity=".6"/>
+              <polygon points="490,170 484,180 496,180" fill="#91E1AE"/>
+              <text x="505" y="210" class="d-label" fill="#91E1AE">recorded on-chain</text>
+              <!-- Bottom plane: Commercial -->
+              <rect x="0" y="300" width="670" height="130" fill="none"/>
+              <line x1="0" y1="300" x2="670" y2="300" class="d-rule"/>
+              <text x="24" y="334" class="d-micro" fill="#A79FFF">COMMERCIAL LAYER</text>
+              <text x="24" y="364" class="d-misttxt">listing · contract · delivery</text>
+              <!-- Fashma node -->
+              <circle cx="335" cy="370" r="6" fill="#0A1128" stroke="#F7F8FC" stroke-width="1.5"/>
+              <text x="346" y="374" class="d-label" fill="#F7F8FC">FASHMA</text>
+            </svg>
+            <figcaption class="caption">The record complements — does not replace — regulatory records.</figcaption>
+          </figure>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="09"></span>
+        </footer>
+        <aside class="notes">
+          We're not replacing regulators. We're making the trading activity transparent and auditable so regulators can see exactly what's happening. This is a partnership, not a replacement. Non-custodial architecture means regulators don't have to trust us — they have to trust the record. The digital-asset framework exists but does not currently govern spectrum contracts.
+        </aside>
+      </section>
+
+      <!-- Slide 10: The Financial Marketplace -->
+      <section class="slide" id="s10" aria-label="The marketplace">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">09 — The marketplace</span>
+        </header>
+        <div class="frame frame--wide">
+          <div class="lede">
+            <h2 class="headline">A listing you can check, not just believe.</h2>
+            <p class="standfirst">Buyers compare on terms that carry evidence.</p>
+          </div>
+          <!-- Listing ticket + two rails -->
+          <figure class="art art--wide" style="margin-top: 30px">
+            <svg viewBox="0 0 1360 420" role="img" aria-labelledby="s10t s10d">
+              <title id="s10t">Seller and buyer rails with listing ticket</title>
+              <desc id="s10d">Seller publishes and settles; buyer searches and contracts. A listing ticket shows the terms.</desc>
+              <!-- Seller rail -->
+              <text x="100" y="70" class="d-micro">SELLER</text>
+              <line x1="100" y1="90" x2="420" y2="90" class="d-rule"/>
+              <text x="100" y="104" class="d-label"><tspan fill="#6C63FF">01</tspan> Publish</text>
+              <line x1="100" y1="160" x2="420" y2="160" class="d-rule"/>
+              <text x="100" y="174" class="d-label"><tspan fill="#6C63FF">02</tspan> Evidence</text>
+              <line x1="100" y1="230" x2="420" y2="230" class="d-rule"/>
+              <text x="100" y="244" class="d-label"><tspan fill="#6C63FF">03</tspan> Issue</text>
+              <!-- Arrows to ticket -->
+              <path d="M 420 170 L 460 170" class="d-path"/>
+              <polygon points="460,170 450,164 450,176" fill="#6C63FF"/>
+              <!-- Listing ticket -->
+              <rect x="460" y="40" width="440" height="230" fill="#101A3A" stroke="rgba(167,159,255,.28)" stroke-width="1" rx="12" style="filter:drop-shadow(0 0 30px rgba(108,99,255,.35))"/>
+              <line x1="472" y1="40" x2="888" y2="40" stroke="#6C63FF" stroke-width="1" stroke-dasharray="4 4"/>
+              <text x="484" y="64" class="plate__label" style="font-size: 10px">LISTING</text>
+              <text x="790" y="64" class="d-micro" text-anchor="end">L-0042</text>
+              <text x="876" y="64" fill="#A79FFF" text-anchor="end" style="font-size: 9px; font-weight: 600; letter-spacing: .16em">SPECIMEN</text>
+              <line x1="484" y1="80" x2="876" y2="80" stroke="rgba(247,248,252,.08)" stroke-width="1"/>
+              <text x="484" y="110" class="plate__label">BAND</text>
+              <text x="484" y="130" class="plate__value" style="font-size: 16px">10 MHz</text>
+              <text x="644" y="110" class="plate__label">COVERAGE</text>
+              <text x="644" y="130" class="plate__value" style="font-size: 16px">Europe</text>
+              <line x1="484" y1="145" x2="876" y2="145" stroke="rgba(247,248,252,.08)" stroke-width="1"/>
+              <text x="484" y="175" class="plate__label">WINDOW</text>
+              <text x="484" y="195" class="plate__value" style="font-size: 16px">Mar 2027</text>
+              <text x="644" y="175" class="plate__label">TERMS</text>
+              <text x="644" y="195" class="plate__value" style="font-size: 16px">On request</text>
+              <!-- Spectrum strip in ticket -->
+              <svg x="484" y="220" width="168" height="10" viewBox="0 0 496 18">
+                <line x1="0" y1="9" x2="496" y2="9" stroke="#25305A" stroke-width="1"/>
+                <rect x="86" y="4" width="324" height="10" fill="url(#gSig)"/>
+              </svg>
+              <!-- Arrow from ticket to buyer -->
+              <path d="M 900 170 L 940 170" class="d-path"/>
+              <polygon points="940,170 930,164 930,176" fill="#6C63FF"/>
+              <!-- Buyer rail -->
+              <text x="940" y="70" class="d-micro">BUYER</text>
+              <line x1="940" y1="90" x2="1260" y2="90" class="d-rule"/>
+              <text x="940" y="104" class="d-label"><tspan fill="#6C63FF">01</tspan> Search</text>
+              <line x1="940" y1="160" x2="1260" y2="160" class="d-rule"/>
+              <text x="940" y="174" class="d-label"><tspan fill="#6C63FF">02</tspan> Compare</text>
+              <line x1="940" y1="230" x2="1260" y2="230" class="d-rule"/>
+              <text x="940" y="244" class="d-label"><tspan fill="#6C63FF">03</tspan> Contract</text>
+              <!-- Caption inside SVG -->
+              <text x="460" y="302" class="d-micro">Illustrative listing.</text>
+            </svg>
+          </figure>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="10"></span>
+        </footer>
+        <aside class="notes">
+          For sellers: list once, get discovered. For buyers: find what you need, purchase it with confidence. Settlement is recorded against the contract. This is not an order book; there is no price index; confidentiality is a feature — terms are on request.
+        </aside>
+      </section>
+
+      <!-- Slide 11: Spectra M² — checks and allocation -->
+      <section class="slide" id="s11" aria-label="The check">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">10 — The check</span>
+        </header>
+        <div class="frame frame--wide">
+          <div class="lede">
+            <h2 class="headline">Four checks before a deal becomes a contract.</h2>
+            <p class="standfirst">Four checks, tested against current records in one pass.</p>
+          </div>
+          <!-- Gate + allocation band -->
+          <figure class="art art--wide" style="margin-top: 30px">
+            <svg viewBox="0 0 1360 400" role="img" aria-labelledby="s11t s11d">
+              <title id="s11t">Four compliance gates and allocation</title>
+              <desc id="s11d">Four checks; if all pass, bandwidth is allocated and becomes a contract.</desc>
+              <!-- Path through gates -->
+              <line x1="0" y1="160" x2="860" y2="160" class="d-path"/>
+              <!-- Gates -->
+              <g>
+                <line x1="120" y1="100" x2="120" y2="220" class="d-path"/>
+                <circle cx="120" cy="160" r="6" fill="#0A1128" stroke="#6C63FF" stroke-width="1.5"/>
+                <text x="120" y="85" class="d-label" text-anchor="middle">JURISDICTION</text>
+                <g class="gate-pass"><circle cx="120" cy="246" r="12"/><use href="#ico-check" x="111" y="237" width="18" height="18"/></g>
+              </g>
+              <g>
+                <line x1="280" y1="100" x2="280" y2="220" class="d-path"/>
+                <circle cx="280" cy="160" r="6" fill="#0A1128" stroke="#6C63FF" stroke-width="1.5"/>
+                <text x="280" y="85" class="d-label" text-anchor="middle">TIME</text>
+                <g class="gate-pass"><circle cx="280" cy="246" r="12"/><use href="#ico-check" x="271" y="237" width="18" height="18"/></g>
+              </g>
+              <g>
+                <line x1="440" y1="100" x2="440" y2="220" class="d-path"/>
+                <circle cx="440" cy="160" r="6" fill="#0A1128" stroke="#6C63FF" stroke-width="1.5"/>
+                <text x="440" y="85" class="d-label" text-anchor="middle">LOCATION</text>
+                <g class="gate-pass"><circle cx="440" cy="246" r="12"/><use href="#ico-check" x="431" y="237" width="18" height="18"/></g>
+              </g>
+              <g>
+                <line x1="600" y1="100" x2="600" y2="220" class="d-path"/>
+                <circle cx="600" cy="160" r="6" fill="#0A1128" stroke="#6C63FF" stroke-width="1.5"/>
+                <text x="600" y="85" class="d-label" text-anchor="middle">INTERFERENCE</text>
+                <g class="gate-pass"><circle cx="600" cy="246" r="12"/><use href="#ico-check" x="591" y="237" width="18" height="18"/></g>
+              </g>
+              <!-- Return bus -->
+              <path d="M 120 310 L 600 310" class="d-dash"/>
+              <line x1="120" y1="258" x2="120" y2="310" class="d-dash"/>
+              <line x1="280" y1="258" x2="280" y2="310" class="d-dash"/>
+              <line x1="440" y1="258" x2="440" y2="310" class="d-dash"/>
+              <line x1="600" y1="258" x2="600" y2="310" class="d-dash"/>
+              <polygon points="0,310 10,304 10,316" fill="#5A6383"/>
+              <text x="0" y="335" class="d-label">returned with reason</text>
+              <text x="616" y="314" class="d-micro">all four must pass</text>
+              <!-- Allocation band -->
+              <text x="860" y="120" class="d-micro">ALLOCATION</text>
+              <rect x="860" y="146" width="500" height="28" fill="none" stroke="#25305A" stroke-width="1"/>
+              <rect x="860" y="146" width="500" height="28" fill="url(#hatch)" opacity=".08"/>
+              <rect x="1060" y="146" width="50" height="28" fill="url(#gSig)"/>
+              <text x="860" y="200" class="d-label">assigned at delivery</text>
+              <!-- Contract label -->
+              <line x1="1085" y1="174" x2="1085" y2="230" stroke="#25305A" stroke-width="1"/>
+              <text x="1085" y="250" class="d-label" fill="#F7F8FC">CONTRACT MINTED</text>
+              <circle cx="1072" cy="246" r="4" fill="#91E1AE"/>
+              <!-- Caption -->
+              <text x="0" y="380" class="d-micro">One recorded pass. Time saved is measured in the pilot.</text>
+            </svg>
+          </figure>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="11"></span>
+        </footer>
+        <aside class="notes">
+          Instead of lawyers spending weeks checking whether a deal is legal, the system tests the deal against current records in one pass. The four checks are jurisdiction, time, location, and interference. This is a design objective; we will measure the time saved in the pilot. What remains a counsel opinion is kept as such.
+        </aside>
+      </section>
+
+      <!-- Slide 12: The Service Delivery System (anchored attestations) -->
+      <section class="slide" id="s12" aria-label="The contract becomes a live link.">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">11 — The delivery</span>
+        </header>
+        <div class="frame frame--wide">
+          <div class="lede">
+            <h2 class="headline">The contract becomes<br>a live link.</h2>
+            <p class="standfirst">Activation, a provider-signed attestation, and an on-chain receipt.</p>
+          </div>
+          <figure class="art art--wide">
+            <svg class="art" viewBox="0 60 1360 380" role="img" aria-labelledby="s12t s12d">
+              <title id="s12t">Delivery with anchored attestations</title>
+              <desc id="s12d">Two signatures: Spectra M² assigns the frequency; the provider attests activation. Both anchored on-chain to one receipt.</desc>
+              <!-- Earth arcs (proper horizon) -->
+              <path d="M 0 372 A 620 620 0 0 1 600 588" fill="none" stroke="#6C63FF" stroke-width="1" opacity=".18"/>
+              <path d="M 0 331 A 660 660 0 0 1 640 570" fill="none" stroke="#6C63FF" stroke-width="1" opacity=".12"/>
+              <!-- Ground station on the arc -->
+              <line x1="300" y1="370" x2="300" y2="387" stroke="#C3C9DC" stroke-width="1.5"/>
+              <path d="M 270 370 Q 300 340 330 370" fill="none" stroke="#C3C9DC" stroke-width="1.5"/>
+              <line x1="280" y1="387" x2="320" y2="387" stroke="#C3C9DC" stroke-width="1.5"/>
+              <text x="300" y="410" class="d-micro" text-anchor="middle">GROUND STATION</text>
+              <!-- Satellite -->
+              <g transform="translate(1120,130)">
+                <rect x="-10" y="-6" width="20" height="12" fill="#C3C9DC" stroke="#C3C9DC" stroke-width="1.5"/>
+                <rect x="-40" y="-5" width="30" height="10" fill="#C3C9DC" opacity=".5"/>
+                <rect x="10" y="-5" width="30" height="10" fill="#C3C9DC" opacity=".5"/>
+                <line x1="0" y1="-6" x2="0" y2="-14" stroke="#C3C9DC" stroke-width="1"/>
+                <circle cx="0" cy="-16" r="2" fill="#C3C9DC"/>
+              </g>
+              <text x="1120" y="96" class="d-micro" text-anchor="middle">SATELLITE</text>
+              <!-- Link path -->
+              <path d="M 340 360 Q 700 210 1090 160" fill="none" stroke="#6C63FF" stroke-width="1.5" stroke-dasharray="6 4" opacity=".7"/>
+              <!-- Mint live segment -->
+              <path d="M 640 260 Q 740 235 840 265" fill="none" stroke="#91E1AE" stroke-width="2"/>
+              <circle cx="740" cy="250" r="6" fill="#91E1AE"/>
+              <circle cx="740" cy="250" r="14" fill="none" stroke="#91E1AE" stroke-width="1" opacity=".15"/>
+              <!-- Path labels -->
+              <text x="360" y="312" class="d-micro">CONTRACT</text>
+              <line x1="360" y1="317" x2="380" y2="340" stroke="#25305A" stroke-width="1"/>
+              <text x="700" y="225" class="d-micro">ACTIVATE</text>
+              <line x1="700" y1="230" x2="720" y2="250" stroke="#25305A" stroke-width="1"/>
+              <text x="900" y="300" class="d-micro">ASSIGNED</text>
+              <text x="1050" y="300" class="d-micro">ATTESTED</text>
+              <!-- Proof rail -->
+              <g data-chain="rail">
+                <line x1="820" y1="320" x2="1000" y2="320" stroke="#6C63FF" stroke-width="1" opacity=".4"/>
+                <rect class="chain-anchor" x="897" y="317" width="6" height="6"/>
+                <rect class="chain-anchor" x="967" y="317" width="6" height="6"/>
+              </g>
+            </svg>
+            <!-- Two-signature receipt chip, inside the art bounds -->
+            <div class="receipt-chip receipt-chip--proof chip--overlay" data-chain="rail">
+              <div class="chip-row">
+                <div class="chip-row__label"><svg class="icon" aria-hidden="true"><use href="#ico-check"/></svg> DELIVERED</div>
+                <div class="plate__value chip-value">09:14:02Z</div>
+              </div>
+              <div class="chip-row">
+                <div class="chip-row__label">SPECTRA M²</div>
+                <div class="plate__value chip-value">frequency assigned</div>
+              </div>
+              <div class="chip-row">
+                <div class="chip-row__label">PROVIDER</div>
+                <div class="plate__value chip-value">activation attested</div>
+              </div>
+              <div class="chip-row chip-row--full">
+                <div class="chip-row__label"><span class="dot-mint"></span>ANCHORED ON-CHAIN</div>
+              </div>
+            </div>
+            <span class="caption">One contract. One link. One on-chain receipt.</span>
+            <span class="art-tag micro">Illustrative.</span>
+          </figure>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="12"></span>
+        </footer>
+        <aside class="notes">
+          Two different signatures: Spectra M² signs the frequency assignment; the provider signs the activation attestation. The receipt anchors both. Neither signature proves physical service quality, legal compliance, or that the signal was interference-free. On an envelope-backed card the assignment is checked against the envelope, width, deadline, active assignments, and the joint packability of other reservations. If no block is feasible, the card stays in delivery-requested, the buyer may cancel, and no receipt is issued. On a contract-only card there is no assignment at all.
+        </aside>
+      </section>
+
+      <!-- Slide 13: Roadmap (proof → pilot → programmable → private) -->
+      <section class="slide" id="s13" aria-label="Prove it in four moves.">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">12 — The path</span>
+        </header>
+        <div class="frame frame--wide">
+          <div class="lede">
+            <h2 class="headline">Prove it in<br>four moves.</h2>
+            <p class="standfirst">Each phase earns the next.</p>
+          </div>
+          <figure class="art art--wide">
+            <svg viewBox="0 0 1360 420" role="img" aria-labelledby="s13t s13d">
+              <title id="s13t">Gated proof roadmap</title>
+              <desc id="s13d">One shared proof per phase.</desc>
+              <!-- Trajectory segments with gate gaps -->
+              <path d="M 60 390 C 220 380, 300 350, 420 320" class="d-path"/>
+              <path d="M 428 318 C 520 290, 560 270, 760 190" class="d-path"/>
+              <path d="M 768 188 C 860 160, 950 130, 1050 105" class="d-path"/>
+              <path d="M 1058 103 C 1150 80, 1220 70, 1300 60" class="d-path"/>
+              <!-- Gate posts -->
+              <g data-chain="gates">
+                <line x1="420" y1="310" x2="420" y2="330" stroke="#6C63FF" stroke-width="1.5" opacity=".5"/>
+                <line x1="760" y1="180" x2="760" y2="200" stroke="#6C63FF" stroke-width="1.5" opacity=".5"/>
+                <line x1="1050" y1="95" x2="1050" y2="115" stroke="#6C63FF" stroke-width="1.5" opacity=".5"/>
+                <text x="420" y="356" class="d-micro" text-anchor="middle">EVIDENCE</text>
+                <text x="760" y="226" class="d-micro" text-anchor="middle">LICENCE</text>
+                <text x="1050" y="141" class="d-micro" text-anchor="middle">PARTNER</text>
+              </g>
+              <!-- Markers (squares) -->
+              <rect class="chain-anchor chain-anchor--live" x="236" y="346" width="8" height="8"/>
+              <circle cx="240" cy="350" r="20" fill="none" stroke="#91E1AE" stroke-width="1" opacity=".18"/>
+              <rect class="chain-anchor" x="596" y="236" width="8" height="8"/>
+              <rect class="chain-anchor" x="936" y="141" width="8" height="8"/>
+              <g data-claim="future">
+                <rect class="chain-anchor" x="1216" y="74" width="8" height="8"/>
+                <text x="1220" y="110" class="d-title" text-anchor="middle">04 PRIVATE FINANCIAL MARKET</text>
+                <text x="1220" y="128" class="d-label" text-anchor="middle">Privacy-preserving settlement.</text>
+              </g>
+              <text x="200" y="335" class="d-micro" fill="#91E1AE" text-anchor="end">START</text>
+              <!-- Phase 1-3 labels -->
+              <text x="240" y="384" class="d-title" text-anchor="middle">01 PROOF OF TRANSACTION</text>
+              <text x="240" y="402" class="d-label" text-anchor="middle">One contract, one on-chain proof.</text>
+              <text x="600" y="272" class="d-title" text-anchor="middle">02 REGULATED PILOT</text>
+              <text x="600" y="290" class="d-label" text-anchor="middle">Named partners, measured outcomes.</text>
+              <text x="940" y="177" class="d-title" text-anchor="middle">03 PROGRAMMABLE MARKET</text>
+              <text x="940" y="195" class="d-label" text-anchor="middle">Conditional rights and delivery.</text>
+              <!-- Gates legend + caption -->
+              <text x="120" y="40" class="d-micro">GATES: EVIDENCE · LICENCE · PARTNER</text>
+              <text x="1360" y="412" class="d-micro" text-anchor="end">Phase 4 subject to licensing, counsel, and market approval.</text>
+            </svg>
+          </figure>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="13"></span>
+        </footer>
+        <aside class="notes">
+          Phase 1 is a devnet proof of one transaction, with synthetic data: one contract, one NFT, one reservation, one delivery attestation, one receipt. Phase 2 is a regulated pilot with named partners, counsel, and a sandbox. Phase 3 makes rights and delivery programmable in operation. Phase 4 adds privacy-preserving settlement; the privacy design is future and is not claimed today. Each gate needs evidence before the next phase. Do not imply that any phase is live or approved.
+        </aside>
+      </section>
+
+      <!-- Slide 14: Why Luxembourg -->
+      <section class="slide" id="s14" aria-label="Why Luxembourg">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="" aria-hidden="true">
+          <span class="act">13 — Why Luxembourg</span>
+        </header>
+        <div class="frame frame--split">
+          <div class="lede">
+            <h2 class="headline">The pieces are already here.</h2>
+            <p class="standfirst">Space heritage, finance, and law — in one jurisdiction.</p>
+            <ul class="proof">
+              <li class="proof__item">
+                <span class="proof__title">Heritage</span>
+                <span class="proof__text">Space infrastructure and expertise.</span>
+              </li>
+              <li class="proof__item">
+                <span class="proof__title">Law</span>
+                <span class="proof__text">An institutional digital-asset framework.</span>
+              </li>
+              <li class="proof__item">
+                <span class="proof__title">Listings</span>
+                <span class="proof__text">A potential new asset category.</span>
+              </li>
+              <li class="proof__item">
+                <span class="proof__title">Activity</span>
+                <span class="proof__text">Operators, providers, and financial participants.</span>
+              </li>
+            </ul>
+          </div>
+          <figure class="art">
+            <svg viewBox="0 0 670 540" role="img" aria-labelledby="s14t s14d">
+              <title id="s14t">Three endowments converging on Luxembourg</title>
+              <desc id="s14d">Space infrastructure, institutional capital, and legal framework converge in one jurisdiction.</desc>
+              <!-- Graticule -->
+              <g aria-hidden="true" opacity=".08">
+                <path d="M 85 120 Q 335 80 585 120" fill="none" stroke="#F7F8FC" stroke-width="1"/>
+                <path d="M 85 270 Q 335 230 585 270" fill="none" stroke="#F7F8FC" stroke-width="1"/>
+                <path d="M 85 420 Q 335 380 585 420" fill="none" stroke="#F7F8FC" stroke-width="1"/>
+                <path d="M 185 50 Q 205 270 185 490" fill="none" stroke="#F7F8FC" stroke-width="1"/>
+                <path d="M 335 50 L 335 490" fill="none" stroke="#F7F8FC" stroke-width="1"/>
+                <path d="M 485 50 Q 465 270 485 490" fill="none" stroke="#F7F8FC" stroke-width="1"/>
+              </g>
+              <!-- Three incoming arcs -->
+              <path d="M 40 50 Q 200 140 335 270" class="d-path" opacity=".5"/>
+              <path d="M 630 50 Q 470 140 335 270" class="d-path" opacity=".5"/>
+              <path d="M 110 500 Q 220 380 335 270" class="d-path" opacity=".5"/>
+              <!-- Arc labels -->
+              <text x="40" y="35" class="d-micro">SPACE</text>
+              <text x="630" y="35" class="d-micro">CAPITAL</text>
+              <text x="110" y="515" class="d-micro">LAW</text>
+              <!-- Convergence -->
+              <circle cx="335" cy="270" r="8" fill="#91E1AE"/>
+              <circle cx="335" cy="270" r="24" fill="none" stroke="#91E1AE" stroke-width="1" opacity=".15"/>
+              <text x="360" y="280" class="d-micro" fill="#F7F8FC">LUXEMBOURG</text>
+              <!-- Caption -->
+              <text x="335" y="480" class="d-label" text-anchor="middle">One jurisdiction. Three endowments.</text>
+            </svg>
+          </figure>
+        </div>
+        <footer class="footer">
+          <span>Fashma · Spectrum Market</span>
+          <span class="pageno" data-page="14"></span>
+        </footer>
+        <aside class="notes">
+          Luxembourg already has the reputation and the legal framework. This marketplace would be a natural extension of that positioning. The digital-asset framework exists but does not currently govern spectrum contracts — that's a boundary to explain if asked. No LuxSE, LSA, or government endorsement is implied.
+        </aside>
+      </section>
+
+      <!-- Slide 15: The ask (one blockchain-verified transaction) -->
+      <section class="slide slide--close" id="s15" aria-label="Start with a pilot.">
+        <header class="masthead">
+          <img class="brand" src="assets/logo.png" alt="Fashma">
+          <span class="micro">LUXEMBOURG · 2026</span>
+        </header>
+        <h1 class="display display--close">Start with<br>a pilot.</h1>
+        <p class="standfirst">One blockchain-verified pilot transaction. Four requests.</p>
+        <!-- Asks (right column) -->
+        <div class="close-asks">
+          <div class="close-ask">
+            <span class="plate__label close-ask__num">01</span>
+            <p class="close-ask__text">A pilot allocation or service type, with the LSA.</p>
+          </div>
+          <div class="close-ask">
+            <span class="plate__label close-ask__num">02</span>
+            <p class="close-ask__text">A regulatory sandbox for one verified transaction.</p>
+          </div>
+          <div class="close-ask">
+            <span class="plate__label close-ask__num">03</span>
+            <p class="close-ask__text">A working group with the Luxembourg Stock Exchange.</p>
+          </div>
+          <div class="close-ask">
+            <span class="plate__label close-ask__num">04</span>
+            <p class="close-ask__text">Named satellite and ground-station partners.</p>
+          </div>
+        </div>
+        <p class="close-outcomes">Measured on settlement time, transaction cost, and regulatory clarity.</p>
+        <p class="micro close-micro">No endorsement is requested or implied.</p>
+        <span class="micro close-domain">fashma.com</span>
+        <!-- Horizon as proof rail: one anchored pilot, future ticks not claimed -->
+        <svg viewBox="0 0 1600 900" aria-hidden="true" style="position:absolute;left:0;top:0;width:1600px;height:900px;pointer-events:none">
+          <path d="M 0 780 Q 800 720 1600 792" fill="none" stroke="#A79FFF" stroke-width="1.2" opacity=".45" style="filter:drop-shadow(0 0 8px rgba(108,99,255,.8))"/>
+          <g data-chain="seal">
+            <rect class="chain-anchor chain-anchor--live" x="115" y="767" width="10" height="10"/>
+            <circle cx="120" cy="772" r="20" fill="none" stroke="#91E1AE" stroke-width="1" opacity=".15"/>
+          </g>
+          <rect x="398" y="756" width="4" height="4" fill="none" stroke="#6C63FF" stroke-width="1" opacity=".4"/>
+          <rect x="698" y="751" width="4" height="4" fill="none" stroke="#6C63FF" stroke-width="1" opacity=".4"/>
+          <rect x="998" y="755" width="4" height="4" fill="none" stroke="#6C63FF" stroke-width="1" opacity=".4"/>
+          <text x="140" y="750" class="d-micro">ONE VERIFIED TRANSACTION</text>
+        </svg>
+        <aside class="notes">
+          The first milestone is one blockchain-verified pilot transaction: one contract, one NFT, one reservation, one delivery attestation, one receipt. The prototype proof is on devnet with synthetic data; the pilot is the first transaction with named partners. We are not asking for a token sale, a live market, or an endorsement. If the pilot is still synthetic, say so — do not call it a real transaction.
+        </aside>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js core JS -->
+  <script src="vendor/reveal/reveal.js"></script>
+  <!-- Reveal.js notes plugin -->
+  <script src="vendor/reveal/plugin/notes/notes.js"></script>
+
+  <script>
+    Reveal.initialize({
+      width: 1600,
+      height: 900,
+      margin: 0,
+      center: false,
+
+      hash: true,
+      history: true,
+
+      controls: false,
+      progress: false,
+      slideNumber: false,
+      autoAnimate: false,
+
+      transition: 'fade',
+      transitionSpeed: 'fast',
+      backgroundTransition: 'none',
+
+      plugins: [RevealNotes]
+    });
+  </script>
+</body>
+</html>

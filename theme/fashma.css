@@ -1,0 +1,790 @@
+/* Fashma — The Signal Room
+   Premium presentation theme for the Luxembourg business deck.
+   One instrument per slide. Midnight field, iris structure, mint signal.
+   Fonts declared in index.html inline @font-face (correct paths for tests).
+*/
+
+/* Tokens — closed set of 13 colours, 3 gradients */
+:root {
+  --ink-void: #060A1B;
+  --ink: #0A1128;
+  --plate: #101A3A;
+  --line: #25305A;
+  --line-soft: rgba(247, 248, 252, .08);
+
+  --iris-700: #4A43D4;
+  --iris-500: #6C63FF;
+  --iris-300: #A79FFF;
+
+  --mint: #91E1AE;
+  --paper: #F7F8FC;
+  --mist: #C3C9DC;
+  --slate: #8A93AF;
+  --whisper: #5A6383;
+
+  --grad-signal: linear-gradient(90deg, #4A43D4 0%, #6C63FF 52%, #91E1AE 100%);
+  --grad-plate: linear-gradient(180deg, rgba(247, 248, 252, .045), rgba(247, 248, 252, .012));
+  --grad-void: radial-gradient(120% 90% at 78% 8%, rgba(108, 99, 255, .16) 0%, rgba(108, 99, 255, 0) 58%);
+
+  --stage-w: 1600px;
+  --stage-h: 900px;
+  --m: 120px;
+  --content: 1360px;
+}
+
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; }
+
+.reveal {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+}
+.reveal .slides {
+  background: var(--ink);
+}
+
+/* Fixed stage */
+.reveal .slides > section.slide {
+  position: absolute;
+  width: var(--stage-w);
+  height: var(--stage-h);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--ink);
+  text-align: left;
+}
+
+/* Reset the slide elements at zero specificity so the type classes win.
+   The previous `.reveal .slides > section.slide h1,...` (0,3,1) overrode
+   .display/.headline/.standfirst (0,1,0) and rendered the whole deck at 16px. */
+:where(.reveal .slides section.slide) :where(
+  h1, h2, h3, p, ul, li, figure, figcaption, dl, dt, dd
+) {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-transform: none;
+  letter-spacing: normal;
+  text-align: left;
+}
+.reveal .slides section.slide ul { list-style: none; }
+
+/* Hide Reveal default chrome */
+.reveal .controls, .reveal .progress, .reveal .slide-number { display: none; }
+
+/* Chrome: masthead */
+.masthead {
+  position: absolute;
+  left: var(--m);
+  right: var(--m);
+  top: 48px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2;
+}
+.brand {
+  height: 24px;
+  width: auto;
+  display: block;
+}
+.slide--cover .brand,
+.slide--close .brand {
+  height: 32px;
+}
+.act {
+  font: 600 11px/1 'Inter';
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Chrome: footer */
+.footer {
+  position: absolute;
+  left: var(--m);
+  right: var(--m);
+  bottom: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+  font: 500 10px/1 'Inter';
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--slate);
+  z-index: 2;
+}
+.pageno { font-variant-numeric: tabular-nums; }
+.pageno::after { content: attr(data-page) " / 15"; }
+
+/* Layout: frame */
+.frame {
+  position: absolute;
+  left: var(--m);
+  top: 150px;
+  width: var(--content);
+  height: 654px;
+  z-index: 1;
+}
+.frame--split {
+  display: grid;
+  grid-template-columns: 670px 670px;
+  gap: 20px;
+  align-items: center;
+}
+.frame--wide { display: block; }
+
+/* Layout: art */
+.art {
+  position: relative;
+  width: 100%;
+}
+.art svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.frame--split .art { width: 670px; }
+.art--wide { width: 1360px; }
+
+/* Typography */
+.display {
+  font: 700 104px/.95 'Outfit';
+  letter-spacing: -.03em;
+  color: var(--paper);
+  position: absolute;
+  left: var(--m);
+  width: 1360px;
+}
+.display--close { font-size: 96px; line-height: .98; }
+.data {
+  font: 600 96px/.95 'Outfit';
+  letter-spacing: -.025em;
+  color: var(--paper);
+  fill: var(--paper); /* SVG text paints with fill, not color */
+  font-variant-numeric: tabular-nums;
+}
+.data--sm { font-size: 72px; }
+.headline {
+  font: 600 56px/1.05 'Outfit';
+  letter-spacing: -.02em;
+  color: var(--paper);
+  max-width: 22ch;
+}
+.standfirst {
+  font: 400 24px/1.4 'Inter';
+  color: var(--mist);
+  max-width: 38ch;
+  margin-top: 24px;
+}
+.micro {
+  font: 600 11px/1.2 'Inter';
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+.caption {
+  font: 400 13px/1.4 'Inter';
+  color: var(--slate);
+  margin-top: 12px;
+  max-width: 44ch;
+}
+.d-num { font: 700 140px/1 'Outfit'; fill: var(--paper); opacity: .06; }
+
+/* Proof list — replaces bullets */
+.proof {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  max-width: 670px;
+}
+.proof__item {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
+  padding: 14px 0 16px;
+  border-top: 1px solid var(--line-soft);
+}
+.proof__title {
+  font: 600 20px/1.25 'Outfit';
+  color: var(--paper);
+}
+.proof__text {
+  font: 400 18px/1.45 'Inter';
+  color: var(--mist);
+}
+
+/* Plate component */
+.plate {
+  position: relative;
+  width: 560px;
+  padding: 30px 32px 26px;
+  background: var(--plate);
+  background-image: var(--grad-plate);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  box-shadow: none;
+  overflow: hidden;
+}
+.plate::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: var(--grad-signal);
+}
+.plate--listing::before {
+  height: 1px;
+  background: none;
+  border-top: 1px dashed var(--line);
+}
+.plate__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.plate__label {
+  font: 600 10px/1.2 'Inter';
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+.plate__value {
+  font: 500 18px/1.3 'Inter';
+  color: var(--mist);
+  font-variant-numeric: tabular-nums;
+}
+.plate__hero {
+  font: 600 52px/1 'Outfit';
+  letter-spacing: -.02em;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+.plate__unit {
+  font: 500 18px/1 'Inter';
+  color: var(--mist);
+  margin-left: 8px;
+}
+.plate__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line-soft);
+}
+.plate__row--full { grid-template-columns: 1fr; }
+.plate__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-soft);
+}
+.specimen {
+  font: 600 9px/1 'Inter';
+  letter-spacing: .18em;
+  color: var(--iris-300);
+  border: 1px solid rgba(167, 159, 255, .4);
+  border-radius: 2px;
+  padding: 5px 7px;
+}
+.dot-mint {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--mint);
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: 1px;
+}
+
+/* Spectrum strip */
+.spectrum { display: block; width: 100%; height: auto; margin-top: 12px; }
+
+/* Shared SVG diagram classes */
+.d-rule { stroke: var(--line); stroke-width: 1; fill: none; }
+.d-path { stroke: var(--iris-500); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.d-key { stroke: var(--iris-500); stroke-width: 2; fill: none; stroke-linecap: round; }
+.d-mint { stroke: var(--mint); stroke-width: 1.5; fill: none; stroke-linecap: round; }
+.d-dash { stroke: var(--whisper); stroke-width: 1; fill: none; stroke-dasharray: 4 6; }
+.d-fill-plate { fill: var(--plate); }
+.d-fill-mint { fill: var(--mint); }
+.d-label { font: 500 12px 'Inter'; fill: var(--mist); }
+.d-micro { font: 600 10px 'Inter'; letter-spacing: .14em; fill: var(--slate); }
+.d-title { font: 600 14px 'Outfit'; fill: var(--paper); }
+.d-timestamp { font: 500 11px 'Inter'; fill: var(--slate); font-variant-numeric: tabular-nums; }
+.d-papertxt { font: 500 12px 'Inter'; fill: var(--paper); }
+.d-misttxt { font: 400 15px 'Inter'; fill: var(--mist); }
+
+/* Swimlane board */
+.swim {
+  position: relative;
+  width: 1360px;
+  display: grid;
+  grid-template-columns: 140px repeat(4, 285px);
+  grid-template-rows: 52px repeat(3, 100px);
+  column-gap: 20px;
+}
+.swim__lines {
+  position: absolute;
+  inset: 0;
+  width: 1360px;
+  height: 352px;
+  pointer-events: none;
+  z-index: 0;
+}
+.swim > * { position: relative; z-index: 1; }
+.swim__head {
+  align-self: end;
+  padding-bottom: 14px;
+  text-align: left;
+  font: 600 10px/1.2 'Inter';
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+.swim__lane {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 20px;
+  border-right: 1px solid var(--line);
+  font: 600 10px/1.2 'Inter';
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+.swim__cell {
+  padding: 10px 10px 0 20px;
+  font: 500 13px/1.35 'Inter';
+  color: var(--mist);
+}
+.icon {
+  width: 14px;
+  height: 14px;
+  color: var(--mint);
+  display: inline-block;
+  vertical-align: -2px;
+}
+
+/* Cover and closing overrides */
+.slide--cover, .slide--close { background: var(--ink-void); }
+.slide--cover::before, .slide--close::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--grad-void);
+  pointer-events: none;
+}
+.slide--cover .display { top: 264px; }
+.slide--cover .micro { position: absolute; left: var(--m); top: 232px; }
+.slide--cover .standfirst { position: absolute; left: var(--m); top: 540px; }
+.slide--cover .cover-loc { position: static; color: var(--mist); }
+.slide--cover .cover-conf { position: absolute; left: var(--m); top: 800px; }
+
+.slide--close .display { top: 260px; }
+.slide--close .standfirst {
+  position: absolute;
+  left: var(--m);
+  top: 480px;
+}
+
+/* Small inline icons inside the art must not inherit the full-width SVG rule */
+.art svg.icon, .art svg.nft-seal__check { width: 14px; height: 14px; }
+
+/* New chain vocabulary — the only new SVG chain class */
+.chain-anchor { fill: var(--ink); stroke: var(--iris-500); stroke-width: 1.5; }
+.chain-anchor--live { fill: var(--mint); stroke: var(--mint); }
+
+/* The seal is an HTML object attached to the contract plate */
+.nft-seal {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  background: var(--plate);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+.nft-seal__check { width: 14px; height: 14px; color: var(--mint); }
+.nft-seal__label {
+  font: 600 9px/1 'Inter';
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--mint);
+}
+
+/* Swim wrap for slide 7 — SVG must be outside the grid */
+.swim-wrap { position: relative; width: 1360px; }
+.swim__lines { position: absolute; inset: 0; width: 1360px; height: 408px; pointer-events: none; z-index: 0; }
+.swim {
+  position: relative;
+  width: 1360px;
+  display: grid;
+  grid-template-columns: 140px repeat(4, 285px);
+  grid-template-rows: 52px repeat(3, 100px) 56px;
+  column-gap: 20px;
+}
+.swim > * { position: relative; z-index: 1; }
+
+/* Receipt chip — moved from inline style */
+.receipt-chip {
+  border: 1px solid rgba(145, 225, 174, .45);
+  border-radius: 2px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.receipt-chip--proof { display: block; padding: 14px 18px; }
+.chip-row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+  padding: 6px 0;
+  border-top: 1px solid var(--line-soft);
+}
+.chip-row__label {
+  font: 600 9px/1 'Inter';
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+/* Plate wrap for seal positioning */
+.plate-wrap { position: relative; width: 560px; margin: 0 auto; }
+
+/* Utility: visually hidden but present in the DOM/accessibility tree */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Cover footer: page number stays right-aligned */
+.footer--end { justify-content: flex-end; }
+
+/* Inline chip content (replaces inline display:flex) */
+.chip-inline { display: flex; align-items: center; gap: 8px; }
+
+/* Slide 12: receipt chip overlaid inside the art bounds */
+.chip--overlay {
+  position: absolute;
+  right: 40px;
+  top: 250px;
+  width: 320px;
+  background: var(--ink);
+}
+.chip-value { font-size: 11px; }
+.receipt-chip--proof { padding: 8px 12px; }
+.receipt-chip--proof .chip-row { grid-template-columns: 124px 1fr; padding: 3px 0; }
+.receipt-chip--proof .chip-row--full { grid-template-columns: 1fr; }
+
+/* Slide 12 / 15 art label */
+.art-tag { position: absolute; top: 8px; right: 0; }
+
+/* Slide 15: closing ask layout */
+.close-asks { position: absolute; right: var(--m); top: 250px; width: 660px; }
+.close-ask {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line-soft);
+}
+.close-ask__num { color: var(--iris-300); }
+.close-ask__text { font: 400 16px/1.4 'Inter'; color: var(--mist); }
+.close-outcomes {
+  position: absolute;
+  left: var(--m);
+  top: 680px;
+  max-width: 760px;
+  font: 400 14px/1.4 'Inter';
+  color: var(--mist);
+}
+.close-micro { position: absolute; left: var(--m); top: 716px; color: var(--slate); }
+.close-domain { position: absolute; right: var(--m); top: 820px; color: var(--slate); }
+
+/* ==========================================================================
+   Polish layer (2026-11-24) — depth, legibility, and finish.
+   Same art direction, same copy; this block only refines how it renders.
+   ========================================================================== */
+
+/* Atmosphere: every slide gets a soft iris glow (depth) and a faint
+   star grain (texture). Cover/close keep their own stronger glow. */
+.reveal .slides section.slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(60% 70% at 88% 18%, rgba(108, 99, 255, .13) 0%, rgba(108, 99, 255, 0) 70%),
+    radial-gradient(50% 60% at 8% 100%, rgba(74, 67, 212, .10) 0%, rgba(74, 67, 212, 0) 70%),
+    radial-gradient(120% 120% at 50% 50%, rgba(6, 10, 27, 0) 55%, rgba(6, 10, 27, .55) 100%);
+}
+.reveal .slides section.slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: .38;
+  background-image:
+    radial-gradient(circle, rgba(247, 248, 252, .55) 0 .7px, transparent 1.2px),
+    radial-gradient(circle, rgba(167, 159, 255, .45) 0 .6px, transparent 1.1px),
+    radial-gradient(circle, rgba(247, 248, 252, .30) 0 .5px, transparent 1px);
+  background-size: 211px 197px, 307px 283px, 89px 101px;
+  background-position: 13px 29px, 151px 67px, 41px 7px;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .35) 60%, transparent 100%);
+          mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .35) 60%, transparent 100%);
+}
+.slide--cover::before, .slide--close::before {
+  background:
+    radial-gradient(70% 80% at 82% 10%, rgba(108, 99, 255, .30) 0%, rgba(108, 99, 255, 0) 62%),
+    radial-gradient(40% 50% at 95% 95%, rgba(145, 225, 174, .08) 0%, rgba(145, 225, 174, 0) 70%),
+    radial-gradient(120% 120% at 40% 50%, rgba(6, 10, 27, 0) 50%, rgba(6, 10, 27, .6) 100%);
+}
+.slide--cover::after, .slide--close::after { opacity: .85; }
+/* Atmosphere layers sit under all content: the slide isolates its own
+   stacking context, so z-index:-1 lands above its background only.
+   Descendant (not child) selector: in ?print-pdf mode Reveal wraps each
+   section in .pdf-page, and `.slides > section` stops matching — which is
+   why the PDF used to inherit Reveal's text-align:center. */
+.reveal .slides section.slide { isolation: isolate; text-align: left; }
+
+/* Chrome: act label gets a short signal dash; footer rule fades out */
+.act { display: inline-flex; align-items: center; gap: 12px; color: var(--mist); }
+.act::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--grad-signal);
+}
+.footer {
+  border-top: 0;
+  color: var(--whisper);
+}
+.footer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(108, 99, 255, .55), rgba(247, 248, 252, .10) 35%, rgba(247, 248, 252, .04));
+}
+.pageno { color: var(--mist); }
+
+/* Headlines: crisper, with a quiet light-to-iris sheen */
+.display, .headline {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F7F8FC 45%, #C9C4FF 130%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.standfirst { color: #CDD2E4; }
+
+/* Proof lists: each row gets an iris tick and a little more air */
+.proof__item {
+  position: relative;
+  padding: 18px 0 18px 22px;
+  border-top: 1px solid rgba(247, 248, 252, .07);
+}
+.proof__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 25px;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--iris-500);
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
+.proof__item[data-claim="on-chain"]::before { background: var(--mint); border-color: var(--mint); box-shadow: 0 0 12px rgba(145, 225, 174, .6); }
+.proof__title { font-size: 21px; }
+
+/* Plates & tickets: glassier, softly lit, with real depth */
+.plate {
+  border-radius: 14px;
+  border-color: rgba(167, 159, 255, .22);
+  background:
+    linear-gradient(160deg, rgba(167, 159, 255, .10) 0%, rgba(167, 159, 255, 0) 40%),
+    linear-gradient(180deg, #131E44 0%, #0E1736 100%);
+  box-shadow:
+    0 40px 80px -30px rgba(0, 0, 0, .75),
+    0 0 0 1px rgba(6, 10, 27, .6),
+    0 0 90px -20px rgba(108, 99, 255, .35),
+    inset 0 1px 0 rgba(247, 248, 252, .08);
+}
+.plate::before { height: 3px; }
+.nft-seal {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #1B2A55, #0E1736 70%);
+  border: 1px solid rgba(145, 225, 174, .55);
+  box-shadow: 0 0 0 6px rgba(145, 225, 174, .06), 0 0 30px rgba(145, 225, 174, .35);
+}
+.nft-seal__check { width: 16px; height: 16px; }
+.art svg.nft-seal__check { width: 16px; height: 16px; }
+.specimen { border-radius: 999px; padding: 5px 10px; }
+.receipt-chip {
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(145, 225, 174, .08), rgba(145, 225, 174, .02));
+  box-shadow: 0 0 40px -10px rgba(145, 225, 174, .35), inset 0 1px 0 rgba(247, 248, 252, .06);
+}
+.chip--overlay { background: linear-gradient(180deg, #102238, #0C1530); }
+
+/* Diagrams: legible at the back of the room */
+.d-rule { stroke: #2E3A6B; }
+.d-path { stroke-width: 2; }
+.d-key { stroke-width: 2.5; }
+.d-label { font-size: 15px; fill: #CDD2E4; }
+.d-micro { font-size: 11.5px; letter-spacing: .16em; fill: #9AA2C0; }
+.d-title { font-size: 16px; }
+.d-misttxt { font-size: 17px; }
+.d-timestamp { font-size: 12px; }
+.d-num {
+  fill: url(#gGhost);
+  stroke: none;
+  opacity: 1;
+}
+.d-path, .d-key { filter: drop-shadow(0 0 6px rgba(108, 99, 255, .45)); }
+.chain-anchor { stroke-width: 2; }
+.chain-anchor--live { filter: drop-shadow(0 0 6px rgba(145, 225, 174, .9)); }
+.dot-mint { width: 7px; height: 7px; box-shadow: 0 0 10px rgba(145, 225, 174, .8); }
+
+/* HTML type classes reused inside SVG need fill, not color
+   (otherwise "DELIVERED" on s8 and the s10 ticket render black). */
+svg .plate__hero, svg .plate__value { fill: var(--paper); }
+svg .plate__label { fill: var(--slate); font: 600 10px 'Inter'; letter-spacing: .16em; }
+svg .caption { fill: var(--slate); font: 400 15px 'Inter'; }
+
+/* Swimlane (slide 7): filled cells read as small lit cards */
+.swim__cell:not(:empty) {
+  font-size: 15px;
+  color: var(--paper);
+}
+.swim__head { color: var(--iris-300); font-size: 11px; }
+.swim__lane { color: var(--mist); font-size: 11px; }
+.swim__card {
+  display: block;
+  margin: 10px 20px 0 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(167, 159, 255, .18);
+  background: linear-gradient(180deg, rgba(108, 99, 255, .12), rgba(108, 99, 255, .03));
+}
+.swim__card--mint {
+  border-color: rgba(145, 225, 174, .35);
+  background: linear-gradient(180deg, rgba(145, 225, 174, .10), rgba(145, 225, 174, .02));
+}
+.swim__anchor { width: 10px; height: 10px; display: inline-block; vertical-align: -1px; margin-right: 8px; overflow: visible; }
+.swim__note { display: block; margin: 6px 0 0 160px; }
+
+/* Slide 11: a passed gate — mint check seated in a node on the return bus */
+.gate-pass { color: var(--mint); }
+.gate-pass circle { fill: var(--ink); stroke: rgba(145, 225, 174, .55); stroke-width: 1; filter: drop-shadow(0 0 6px rgba(145, 225, 174, .45)); }
+
+/* Slide 15: the asks are the point of the deck — give them presence */
+.close-asks { top: 236px; }
+.close-ask {
+  grid-template-columns: 64px 1fr;
+  align-items: baseline;
+  padding: 22px 0;
+  border-top-color: rgba(167, 159, 255, .16);
+}
+.close-ask:last-child { border-bottom: 1px solid rgba(167, 159, 255, .16); }
+.close-ask__num {
+  font: 600 28px/1 'Outfit';
+  letter-spacing: 0;
+  background: var(--grad-signal);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.close-ask__text { font-size: 21px; color: var(--paper); }
+.close-outcomes { top: 640px; font-size: 16px; }
+.close-micro { top: 676px; }
+
+/* Print / PDF */
+/* When ?print-pdf is in the URL, Reveal.js wraps each section in a .pdf-page
+   div. Target both the direct section and the .pdf-page wrapper so the
+   background is painted at the correct layer in the PDF. */
+@page { size: 1600px 900px; margin: 0; background: #0a1128; }
+
+@media print {
+  html, body, .reveal, .reveal .slides {
+    background: #0a1128 !important;
+  }
+  /* Direct section (normal mode) and .pdf-page wrapper (print-pdf mode) */
+  .reveal .slides > section.slide,
+  .reveal .slides .pdf-page {
+    background: #0a1128 !important;
+  }
+  .reveal .controls, .reveal .progress, .reveal .slide-number { display: none !important; }
+  .reveal .slides > section.slide {
+    break-after: page;
+    page-break-after: always;
+    width: 1600px;
+    height: 900px;
+  }
+  /* Ensure .pdf-page wrapper fills the page with correct dimensions */
+  .reveal .slides .pdf-page {
+    width: 1600px;
+    height: 900px;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .art svg { shape-rendering: geometricPrecision; }
+  /* Chrome's print path outlines background-clip:text boxes; print solid ink */
+  .display, .headline, .close-ask__num {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+  }
+  .close-ask__num { color: var(--iris-300); }
+  /* CSS url(#gradient) fills don't resolve in print; use a faint solid */
+  .d-num { fill: var(--iris-300); opacity: .14; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal .slides > section.slide,
+  .reveal .slides > section.slide * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Focus styles */
+a:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 3px;
+}
